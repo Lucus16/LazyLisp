@@ -1,5 +1,41 @@
 package lazylisp.types;
 
-public class LLObject {
+import lazylisp.Environment;
+import lazylisp.LLException;
 
+public class LLObject {
+	public LLObject dethunk() throws LLException {
+		return this;
+	}
+
+	public Thunk thunk(Environment env) {
+		return new Thunk(env, this);
+	}
+
+	public LLObject eval(Environment env) throws LLException {
+		return env.eval(this);
+	}
+
+	public LLObject get(int index) throws LLException {
+		throw new IndexOutOfBoundsException();
+	}
+
+	public boolean toBool() throws LLException {
+//		return !Atom.f.equals(this);
+		if (Atom.t.equals(this)) { return true; }
+		if (Atom.f.equals(this)) { return false; }
+		throw new LLException("Not a boolean: " + this);
+	}
+
+	public Atom asAtom() throws LLException {
+		throw new LLException("Not an atom: " + this);
+	}
+
+	public Cons asCons() throws LLException {
+		throw new LLException("Not a list: " + this);
+	}
+
+	public AbstractFunction asFunc() throws LLException {
+		throw new LLException("Not a function: " + this);
+	}
 }

@@ -4,10 +4,11 @@ import lazylisp.types.LLObject;
 
 public class Test {
 	public static void main(String[] args) throws LLException {
-		String program = "nil";
+		String program = "(cond (false blah) (true nil))";
 		LLObject parsed = Parser.parse(program);
-		Evaluator eval = new Evaluator();
-		String result = Printer.print(eval, parsed);
-		System.out.println(result);
+		Environment env = new Environment();
+		System.out.println(Printer.print(parsed));
+		LLObject evaluated = env.eval(parsed);
+		System.out.println(Printer.print(evaluated));
 	}
 }

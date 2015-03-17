@@ -1,5 +1,7 @@
 package lazylisp.types;
 
+import lazylisp.LLException;
+
 public class Atom extends LLObject {
 	public static final Atom t = new Atom("true");
 	public static final Atom f = new Atom("false");
@@ -33,6 +35,11 @@ public class Atom extends LLObject {
 	}
 
 	public String toString() {
-		return "Atom(" + name + ")";
+		return getClass().getName() + "(" + name + ")";
+	}
+
+	@Override
+	public Atom asAtom() throws LLException {
+		return this;
 	}
 }

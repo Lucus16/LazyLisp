@@ -4,36 +4,35 @@ import lazylisp.types.AbstractFunction;
 import lazylisp.types.LLObject;
 
 public class Function extends AbstractFunction {
-	public final Environment env;
+	public final Environment defEnv;
 	public final LLObject argnames;
+	public final LLObject body;
 
-	public Function(Environment env, LLObject argnames) {
+	public Function(Environment defEnv, LLObject argnames, LLObject body) {
 		this.argnames = argnames;
-		this.env = env;
+		this.defEnv = defEnv;
+		this.body = body;
 	}
 
 	@Override
-	public LLObject call(LLObject arg) throws LLException {
-		/* Loop over arg and argnames and put(argname, a) for every a and
-		 * corresponding argname in them on a new Environment with the current
-		 * environment as parent.
-		 * Does current mean environment of creation or environment of call
-		 * here? Creation.
-		 * Can function access underlying vars or only what it is passed?
-		 * Both, but underlying vars will be constant for the existance of the
-		 * function as they are in an environment below it.
-		 *
-		 * This call method returns a Todo object containing the expansion of
-		 * this function. This Todo must specify the environment this function
-		 * was created in.
-		 *
-		 * or
-		 *
-		 * This call method returns a Todo object of the function body with a
-		 * new environment which has as parent the environment at the creation
-		 * of this function and otherwise only contains the parameters with
-		 * which this function was called. < more efficient I think
-		 */
+	public LLObject call(Environment outEnv, LLObject arg) throws LLException {
+//		LLObject argname = argnames;
+//		Environment inEnv = new Environment(defEnv);
+//		while ((arg instanceof Cons) && (argname instanceof Cons)) {
+//			Cons argCons = (Cons)arg;
+//			Thunk argTodo = new Thunk(outEnv, argCons.getCar());
+//			Cons nameCons = (Cons)argname;
+//			Atom nameAtom = cast(nameCons.getCar(), Atom.class);
+//			inEnv.put(nameAtom, argTodo);
+//			arg = argCons.getCdr();
+//			argname = nameCons.getCdr();
+//		}
+//		if (arg instanceof Cons) {
+//			throw new LLException("Too many arguments.");
+//		} else if (argname instanceof Cons) {
+//			throw new LLException("Too few arguments.");
+//		}
+//		return new Thunk(inEnv, body);
 		return null; // TODO
 	}
 }

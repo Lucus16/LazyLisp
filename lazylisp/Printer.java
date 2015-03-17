@@ -1,20 +1,13 @@
 package lazylisp;
 
+import lazylisp.types.AbstractFunction;
 import lazylisp.types.Atom;
 import lazylisp.types.Cons;
-import lazylisp.types.AbstractFunction;
 import lazylisp.types.LLObject;
-import lazylisp.types.Todo;
 
 public class Printer {
-	public static String print(Evaluator eval, LLObject arg) throws LLException {
-		return printX(eval, new Todo(arg));
-	}
-
-	public static String printX(Evaluator eval, LLObject arg) throws LLException {
-		if (arg instanceof Todo) {
-			arg = eval.eval(arg);
-		}
+	public static String print(LLObject arg) throws LLException {
+		arg = arg.dethunk();
 		StringBuilder sb = new StringBuilder();
 		if (arg instanceof Atom) {
 			sb.append(((Atom)arg).getName());
@@ -25,11 +18,8 @@ public class Printer {
 				if (!first) { sb.append(' '); }
 				first = false;
 				Cons cons = (Cons)arg;
-				sb.append(printX(eval, cons.getCar()));
-				arg = cons.getCdr();
-				if (arg instanceof Todo) {
-					arg = eval.eval(arg);
-				}
+				sb.append(print(cons.getCar().dethunk()));
+				arg = cons.getCdr().dethunk();
 			}
 			sb.append(')');
 		} else if (arg instanceof AbstractFunction) {
