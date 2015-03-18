@@ -23,7 +23,7 @@ public class Cons extends LLObject {
 	}
 
 	public String toString() {
-		return getClass().getName() + "(" + car + ", " + cdr + ")";
+		return "Cons(" + car + ", " + cdr + ")";
 	}
 
 	/**
@@ -39,6 +39,7 @@ public class Cons extends LLObject {
 			index -= 1;
 			LLObject list = cons.cdr.dethunk();
 			if (!(list instanceof Cons)) {
+				System.out.println(list.getClass());
 				throw new IndexOutOfBoundsException();
 			}
 			cons = (Cons)list;

@@ -1,22 +1,22 @@
-package lazylisp;
+package lazylisp.types;
 
 import java.util.HashMap;
 
-import lazylisp.types.AbstractFunction;
-import lazylisp.types.Atom;
-import lazylisp.types.Cons;
-import lazylisp.types.LLObject;
-import lazylisp.types.ThunkCons;
+import lazylisp.Environment;
+import lazylisp.LLException;
 
 public class Function extends AbstractFunction {
 	public final Environment defEnv;
 	public LLObject argnames;
 	public final LLObject body;
+	public final boolean evalArgs;
 
-	public Function(Environment defEnv, LLObject argnames, LLObject body) {
+	public Function(Environment defEnv, LLObject argnames, LLObject body,
+			boolean evalArgs) {
 		this.argnames = argnames;
 		this.defEnv = defEnv;
 		this.body = body;
+		this.evalArgs = evalArgs;
 	}
 
 	@Override
@@ -24,7 +24,11 @@ public class Function extends AbstractFunction {
 		argnames = argnames.dethunk();
 		HashMap<Atom, LLObject> map = new HashMap<Atom, LLObject>();
 		if (argnames instanceof Atom) {
-			map.put((Atom)argnames, new ThunkCons(outEnv, arg));
+			if (evalArgs) {
+				map.put((Atom)argnames, new ThunkCons(outEnv, arg));
+			} else {
+				map.put((Atom)argnames, arg);
+			}
 		} else {
 			LLObject argname = argnames;
 			while (argname instanceof Cons) {
@@ -34,8 +38,9 @@ public class Function extends AbstractFunction {
 					throw new LLException("Too few arguments.");
 				}
 				Cons argCons = (Cons)arg;
-				map.put(nameCons.getCar().dethunk().asAtom(),
-						argCons.getCar().thunk(outEnv));
+				LLObject value = argCons.getCar();
+				if (evalArgs) { value = value.thunk(outEnv); }
+				map.put(nameCons.getCar().dethunk().asAtom(), value);
 				argname = nameCons.getCdr().dethunk();
 				arg = argCons.getCdr();
 			}

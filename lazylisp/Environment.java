@@ -2,14 +2,7 @@ package lazylisp;
 
 import java.util.HashMap;
 
-import lazylisp.builtins.BuiltinAtom;
-import lazylisp.builtins.BuiltinCar;
-import lazylisp.builtins.BuiltinCdr;
-import lazylisp.builtins.BuiltinCond;
-import lazylisp.builtins.BuiltinCons;
-import lazylisp.builtins.BuiltinEq;
-import lazylisp.builtins.BuiltinLambda;
-import lazylisp.builtins.BuiltinQuote;
+import lazylisp.builtins.*;
 import lazylisp.types.AbstractFunction;
 import lazylisp.types.Atom;
 import lazylisp.types.Cons;
@@ -20,6 +13,19 @@ public class Environment {
 	private final HashMap<Atom, LLObject> env;
 
 	public Environment() {
+		String letDefinition
+				= "(macro (vars body) ("
+				+ "  (macro"
+				+ "   (getvars getvals)"
+				+ "   (eval (cons"
+				+ "    (list (quote lambda) ((eval getvars) vars) body)"
+				+ "    ((eval getvals) vars))))"
+				+ "  (lambda (x) (cond"
+				+ "    ((atom x) nil)"
+				+ "    (true (cons (car (car x)) ((eval getvars) (cdr x))))))"
+				+ "  (lambda (x) (cond"
+				+ "    ((atom x) nil)"
+				+ "    (true (cons (car (cdr (car x))) ((eval getvals) (cdr x))))))))";
 		parent = null;
 		env = new HashMap<Atom, LLObject>();
 		put(new Atom("cons"), new BuiltinCons());
@@ -30,6 +36,14 @@ public class Environment {
 		put(new Atom("eq"), new BuiltinEq());
 		put(new Atom("quote"), new BuiltinQuote());
 		put(new Atom("lambda"), new BuiltinLambda());
+		put(new Atom("macro"), new BuiltinMacro());
+		put(new Atom("eval"), new BuiltinEval());
+		try {
+			put(new Atom("list"), this.eval(Parser.parse("(lambda l l)")));
+			put(new Atom("let"), this.eval(Parser.parse(letDefinition)));
+		} catch (LLException e) {
+			e.printStackTrace();
+		}
 		put(Cons.nil, Cons.nil);
 		put(Atom.t, Atom.t);
 		put(Atom.f, Atom.f);
@@ -44,6 +58,8 @@ public class Environment {
 		this.parent = parent;
 		this.env = env;
 	}
+
+	public Environment getParent() { return parent; }
 
 	private LLObject put(Atom key, LLObject value) {
 		assert value != null;

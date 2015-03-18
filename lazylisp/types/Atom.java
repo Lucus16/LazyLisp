@@ -35,7 +35,7 @@ public class Atom extends LLObject {
 	}
 
 	public String toString() {
-		return getClass().getName() + "(" + name + ")";
+		return "Atom(" + name + ")";
 	}
 
 	@Override

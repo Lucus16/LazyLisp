@@ -16,7 +16,7 @@ public class Thunk extends LLObject {
 
 	public String toString() {
 		// TODO add representation of environment
-		return getClass().getName() + "(" + body + ")";
+		return "Thunk(" + body + ")";
 	}
 
 	@Override
@@ -26,5 +26,10 @@ public class Thunk extends LLObject {
 			evaluated = true;
 		}
 		return body;
+	}
+
+	@Override
+	public LLObject get(int index) throws LLException {
+		return dethunk().get(index);
 	}
 }
