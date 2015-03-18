@@ -16,23 +16,29 @@ public class Function extends AbstractFunction {
 
 	@Override
 	public LLObject call(Environment outEnv, LLObject arg) throws LLException {
-//		LLObject argname = argnames;
-//		Environment inEnv = new Environment(defEnv);
-//		while ((arg instanceof Cons) && (argname instanceof Cons)) {
-//			Cons argCons = (Cons)arg;
-//			Thunk argTodo = new Thunk(outEnv, argCons.getCar());
-//			Cons nameCons = (Cons)argname;
-//			Atom nameAtom = cast(nameCons.getCar(), Atom.class);
-//			inEnv.put(nameAtom, argTodo);
-//			arg = argCons.getCdr();
-//			argname = nameCons.getCdr();
-//		}
-//		if (arg instanceof Cons) {
-//			throw new LLException("Too many arguments.");
-//		} else if (argname instanceof Cons) {
-//			throw new LLException("Too few arguments.");
-//		}
-//		return new Thunk(inEnv, body);
-		return null; // TODO
+		argnames = argnames.dethunk();
+		Environment inEnv;
+		HashMap<Atom, LLObject> map = new HashMap<Atom, LLObject>();
+		if (argnames instanceof Atom) {
+			map.put(argnames, arg.thunk(outEnv));
+			inEnv = new Environment(defEnv, map);
+			return body.thunk(inEnv);
+		}
+		LLObject argname = argnames.dethunk();
+		while (argname instanceof Cons) {
+			Cons nameCons = (Cons)argname;
+			if (!(arg instanceof Cons) {
+				throw new LLException("Too few arguments.");
+			}
+			Cons argCons = (Cons)arg;
+			map.put(nameCons.getCar().dethunk().asAtom(), arg.thunk(outEnv));
+			argname = nameCons.getCdr();
+			arg = argCons.getCdr();
+		}
+		if (arg instanceof Cons) {
+			throw new LLException("Too many arguments.");
+		}
+		inEnv = new Environment(defEnv, map);
+		return body.thunk(inEnv);
 	}
 }
