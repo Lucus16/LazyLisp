@@ -4,7 +4,7 @@ import lazylisp.types.LLObject;
 
 public class Test {
 	public static void main(String[] args) throws LLException {
-		String program = "(cond (false blah) (true nil))";
+		String program = "((lambda x x) true)";
 		LLObject parsed = Parser.parse(program);
 		Environment env = new Environment();
 		System.out.println(Printer.print(parsed));

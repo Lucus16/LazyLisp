@@ -60,4 +60,8 @@ public class Parser {
 	public static LLObject parse(String s) {
 		return getElem(new StringPeekIterator(s));
 	}
+
+	public static LLObject parse(IPeekIterator<Character> peekiter) {
+		return getElem(peekiter);
+	}
 }

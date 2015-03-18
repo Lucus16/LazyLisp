@@ -9,10 +9,9 @@ public class Thunk extends LLObject {
 	private boolean evaluated;
 
 	public Thunk(Environment env, LLObject body) {
-		assert !(body instanceof Thunk);
 		this.env = env;
 		this.body = body;
-		this.evaluated = false;
+		evaluated = false;
 	}
 
 	public String toString() {
