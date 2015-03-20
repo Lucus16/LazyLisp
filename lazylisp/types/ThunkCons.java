@@ -37,6 +37,8 @@ public class ThunkCons extends LLObject {
 			Cons cons = (Cons)body;
 			evaluated = new Cons(cons.getCar().thunk(env),
 							new ThunkCons(env, cons.getCdr()));
+		} else if (evaluated == null) {
+			evaluated = Cons.nil;
 		}
 		return evaluated;
 	}
