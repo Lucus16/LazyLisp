@@ -11,7 +11,6 @@ import util.peekiter.StringPeekIterator;
 
 public class Parser {
 	private static LLObject getList(IPeekIterator<Character> iter) {
-//		System.err.println("getList called with peek: " + iter.peek());
 		List<LLObject> elems = new ArrayList<LLObject>();
 		while (iter.hasNext()) {
 			LLObject next = getElem(iter);
@@ -24,7 +23,6 @@ public class Parser {
 	}
 
 	private static LLObject getElem(IPeekIterator<Character> iter) {
-//		System.err.println("getElem called with peek: " + iter.peek());
 		while (iter.hasNext() && (iter.peek() == ' ' || iter.peek() == '\t' ||
 				iter.peek() == '\n' || iter.peek() == '\r')) {
 			iter.next();
@@ -44,7 +42,6 @@ public class Parser {
 	}
 
 	private static Atom getAtom(IPeekIterator<Character> iter) {
-//		System.err.println("getAtom called with peek: " + iter.peek());
 		StringBuilder sb = new StringBuilder();
 		while (iter.hasNext()) {
 			char next = iter.peek();
