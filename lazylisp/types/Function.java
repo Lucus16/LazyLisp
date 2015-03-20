@@ -1,7 +1,5 @@
 package lazylisp.types;
 
-import java.util.HashMap;
-
 import lazylisp.Environment;
 import lazylisp.LLException;
 
@@ -22,12 +20,13 @@ public class Function extends AbstractFunction {
 	@Override
 	public LLObject call(Environment outEnv, LLObject arg) throws LLException {
 		argnames = argnames.dethunk();
-		HashMap<Atom, LLObject> map = new HashMap<Atom, LLObject>();
+		Environment inEnv = new Environment(defEnv);
 		if (argnames instanceof Atom) {
 			if (evalArgs) {
-				map.put((Atom)argnames, new ThunkCons(outEnv, arg));
+				LLObject value = new ThunkCons(outEnv, arg);
+				inEnv.put((Atom)argnames, value);
 			} else {
-				map.put((Atom)argnames, arg);
+				inEnv.put((Atom)argnames, arg);
 			}
 		} else {
 			LLObject argname = argnames;
@@ -40,7 +39,7 @@ public class Function extends AbstractFunction {
 				Cons argCons = (Cons)arg;
 				LLObject value = argCons.getCar();
 				if (evalArgs) { value = value.thunk(outEnv); }
-				map.put(nameCons.getCar().dethunk().asAtom(), value);
+				inEnv.put(nameCons.getCar().dethunk().asAtom(), value);
 				argname = nameCons.getCdr().dethunk();
 				arg = argCons.getCdr();
 			}
@@ -48,6 +47,6 @@ public class Function extends AbstractFunction {
 				throw new LLException("Too many arguments.");
 			}
 		}
-		return body.thunk(new Environment(defEnv, map));
+		return body.thunk(inEnv);
 	}
 }

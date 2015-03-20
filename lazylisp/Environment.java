@@ -54,14 +54,14 @@ public class Environment {
 	 * @param parent
 	 * @param env
 	 */
-	public Environment(Environment parent, HashMap<Atom, LLObject> env) {
+	public Environment(Environment parent) {
 		this.parent = parent;
-		this.env = env;
+		env = new HashMap<Atom, LLObject>();
 	}
 
 	public Environment getParent() { return parent; }
 
-	private LLObject put(Atom key, LLObject value) {
+	public LLObject put(Atom key, LLObject value) {
 		assert value != null;
 		return env.put(key, value);
 	}
