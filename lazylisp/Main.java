@@ -8,7 +8,7 @@ public class Main {
 	public static void main(String[] args) {
 		String code;
 		if (args.length != 0) {
-			if (args[0] == "-i") { new REPL().repl(); return; }
+			if (args[0].equals("-i")) { new REPL().repl(); return; }
 			try {
 				code = new Scanner(new File(args[0])).useDelimiter("\\Z")
 						.next();
