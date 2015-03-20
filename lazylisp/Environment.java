@@ -13,19 +13,6 @@ public class Environment {
 	private final HashMap<Atom, LLObject> env;
 
 	public Environment() {
-		String letDefinition
-				= "(macro (vars body) ("
-				+ "  (macro"
-				+ "   (getvars getvals)"
-				+ "   (eval (cons"
-				+ "    (list (quote lambda) ((eval getvars) vars) body)"
-				+ "    ((eval getvals) vars))))"
-				+ "  (lambda (x) (cond"
-				+ "    ((atom x) nil)"
-				+ "    (true (cons (car (car x)) ((eval getvars) (cdr x))))))"
-				+ "  (lambda (x) (cond"
-				+ "    ((atom x) nil)"
-				+ "    (true (cons (car (cdr (car x))) ((eval getvals) (cdr x))))))))";
 		parent = null;
 		env = new HashMap<Atom, LLObject>();
 		put(new Atom("cons"), new BuiltinCons());
@@ -38,9 +25,9 @@ public class Environment {
 		put(new Atom("lambda"), new BuiltinLambda());
 		put(new Atom("macro"), new BuiltinMacro());
 		put(new Atom("eval"), new BuiltinEval());
+		put(new Atom("let"), new BuiltinLet());
 		try {
 			put(new Atom("list"), this.eval(Parser.parse("(lambda l l)")));
-			put(new Atom("let"), this.eval(Parser.parse(letDefinition)));
 		} catch (LLException e) {
 			e.printStackTrace();
 		}
