@@ -11,9 +11,7 @@ public class REPL {
 
 	public void repl() {
 		Environment env = new Environment();
-		while (true) {
-			String input = getFullInput();
-			if (input == null) { break; }
+		for (String input = getFullInput(); input != null; input = getFullInput()) {
 			try {
 				System.out.println(Printer.print(env.eval(Parser.parse(input))));
 			} catch (LLException e) {
