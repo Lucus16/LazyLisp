@@ -11,35 +11,34 @@ import lazylisp.LLException;
 public class ThunkCons extends LLObject {
 	private Environment env;
 	private LLObject body;
-	private boolean evaluated;
+	private NonThunk evaluated;
 
 	public ThunkCons(Environment env, LLObject car, LLObject cdr) {
 		this.env = env;
 		this.body = new Cons(car, cdr);
-		evaluated = false;
+		evaluated = null;
 	}
 
 	public ThunkCons(Environment env, LLObject body) {
 		this.env = env;
 		this.body = body;
-		evaluated = false;
+		evaluated = null;
 	}
 
 	public ThunkCons(Environment env) {
 		this.env = env;
 		this.body = Cons.nil;
-		evaluated = true;
+		evaluated = Cons.nil;
 	}
 
 	@Override
-	public LLObject dethunk() throws LLException {
-		if (!evaluated && body instanceof Cons) {
+	public NonThunk dethunk() throws LLException {
+		if ((evaluated == null) && body instanceof Cons) {
 			Cons cons = (Cons)body;
-			body = new Cons(cons.getCar().thunk(env),
+			evaluated = new Cons(cons.getCar().thunk(env),
 							new ThunkCons(env, cons.getCdr()));
-			evaluated = true;
 		}
-		return body;
+		return evaluated;
 	}
 
 	@Override

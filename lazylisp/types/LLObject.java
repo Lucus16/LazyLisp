@@ -3,10 +3,8 @@ package lazylisp.types;
 import lazylisp.Environment;
 import lazylisp.LLException;
 
-public class LLObject {
-	public LLObject dethunk() throws LLException {
-		return this;
-	}
+public abstract class LLObject {
+	public abstract NonThunk dethunk() throws LLException;
 
 	public Thunk thunk(Environment env) {
 		return new Thunk(env, this);

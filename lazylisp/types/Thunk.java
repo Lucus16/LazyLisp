@@ -6,12 +6,12 @@ import lazylisp.LLException;
 public class Thunk extends LLObject {
 	private Environment env;
 	private LLObject body;
-	private boolean evaluated;
+	private NonThunk evaluated;
 
 	public Thunk(Environment env, LLObject body) {
 		this.env = env;
 		this.body = body;
-		evaluated = false;
+		evaluated = null;
 	}
 
 	public String toString() {
@@ -20,12 +20,11 @@ public class Thunk extends LLObject {
 	}
 
 	@Override
-	public LLObject dethunk() throws LLException {
-		if (!evaluated) {
-			body = env.eval(body);
-			evaluated = true;
+	public NonThunk dethunk() throws LLException {
+		if (evaluated == null) {
+			evaluated = env.eval(body);
 		}
-		return body;
+		return evaluated;
 	}
 
 	@Override

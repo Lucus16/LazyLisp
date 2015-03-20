@@ -2,7 +2,7 @@ package lazylisp.types;
 
 import lazylisp.LLException;
 
-public class Atom extends LLObject {
+public class Atom extends NonThunk {
 	public static final Atom t = new Atom("true");
 	public static final Atom f = new Atom("false");
 
@@ -26,7 +26,7 @@ public class Atom extends LLObject {
 		return name.hashCode();
 	}
 
-	public static LLObject fromBool(boolean b) {
+	public static Atom fromBool(boolean b) {
 		return b ? t : f;
 	}
 

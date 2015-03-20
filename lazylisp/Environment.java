@@ -7,6 +7,8 @@ import lazylisp.types.AbstractFunction;
 import lazylisp.types.Atom;
 import lazylisp.types.Cons;
 import lazylisp.types.LLObject;
+import lazylisp.types.NonThunk;
+import lazylisp.types.Thunk;
 
 public class Environment {
 	private final Environment parent;
@@ -77,7 +79,7 @@ public class Environment {
 	 * @param arg
 	 * @return
 	 */
-	public LLObject thunk(LLObject arg) {
+	public Thunk thunk(LLObject arg) {
 		return arg.thunk(this);
 	}
 
@@ -88,7 +90,7 @@ public class Environment {
 	 * @return
 	 * @throws LLException
 	 */
-	public LLObject eval(LLObject arg) throws LLException {
+	public NonThunk eval(LLObject arg) throws LLException {
 		arg = arg.dethunk();
 		if (arg instanceof Atom) {
 			return get(arg).dethunk();

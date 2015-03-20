@@ -4,7 +4,7 @@ import java.util.List;
 
 import lazylisp.LLException;
 
-public class Cons extends LLObject {
+public class Cons extends NonThunk {
 	public static final Atom nil = new Atom("nil");
 	private final LLObject car;
 	private final LLObject cdr;

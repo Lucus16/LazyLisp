@@ -3,7 +3,7 @@ package lazylisp.types;
 import lazylisp.Environment;
 import lazylisp.LLException;
 
-public abstract class AbstractFunction extends LLObject {
+public abstract class AbstractFunction extends NonThunk {
 	public abstract LLObject call(Environment env, LLObject arg) throws LLException;
 
 	/**
