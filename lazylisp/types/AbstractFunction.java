@@ -15,6 +15,7 @@ public abstract class AbstractFunction extends NonThunk {
 	 */
 	public static void checkArgCount(LLObject arg, int count)
 			throws LLException {
+		int total = count;
 		while (count > 0) {
 			arg = arg.dethunk();
 			if (!(arg instanceof Cons)) {
@@ -24,7 +25,7 @@ public abstract class AbstractFunction extends NonThunk {
 			count -= 1;
 		}
 		if (arg instanceof Cons) {
-			throw new LLException("Too many arguments.");
+			throw new LLException("Too many arguments, expected: " + total);
 		}
 	}
 

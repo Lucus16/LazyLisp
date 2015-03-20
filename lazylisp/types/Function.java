@@ -30,7 +30,9 @@ public class Function extends AbstractFunction {
 			}
 		} else {
 			LLObject argname = argnames;
+			int argnum = 0;
 			while (argname instanceof Cons) {
+				argnum += 1;
 				Cons nameCons = (Cons)argname;
 				arg = arg.dethunk();
 				if (!(arg instanceof Cons)) {
@@ -44,7 +46,7 @@ public class Function extends AbstractFunction {
 				arg = argCons.getCdr();
 			}
 			if (arg instanceof Cons) {
-				throw new LLException("Too many arguments.");
+				throw new LLException("Too many arguments, expected: " + argnum);
 			}
 		}
 		return body.thunk(inEnv);
