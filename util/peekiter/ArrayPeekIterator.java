@@ -7,7 +7,7 @@ public class ArrayPeekIterator<T> implements IPeekIterator<T> {
 	private int i;
 
 	public ArrayPeekIterator(T[] a) {
-		this.a = a;
+		this.a = a.clone();
 		i = -1;
 	}
 
