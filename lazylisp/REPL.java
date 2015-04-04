@@ -26,15 +26,17 @@ public class REPL {
 		if (!scanner.hasNext()) {
 			return null;
 		}
-		String s = scanner.nextLine();
-		while (!parensMatch(s)) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(scanner.nextLine());
+		while (!parensMatch(sb.toString())) {
 			System.out.print("... ");
 			if (!scanner.hasNext()) {
 				return null;
 			}
-			s += " " + scanner.nextLine();
+			sb.append(" ");
+			sb.append(scanner.nextLine());
 		}
-		return s;
+		return sb.toString();
 	}
 
 	public static boolean parensMatch(String input) {
