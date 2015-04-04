@@ -20,7 +20,9 @@ public class Environment {
 		put(new Atom("cons"), new BuiltinCons());
 		put(new Atom("car"), new BuiltinCar());
 		put(new Atom("cdr"), new BuiltinCdr());
-		put(new Atom("atom"), new BuiltinAtom());
+		put(new Atom("isatom"), new BuiltinIsAtom());
+		put(new Atom("iscons"), new BuiltinIsCons());
+		put(new Atom("isfunc"), new BuiltinIsFunc());
 		put(new Atom("cond"), new BuiltinCond());
 		put(new Atom("eq"), new BuiltinEq());
 		put(new Atom("quote"), new BuiltinQuote());
@@ -28,11 +30,6 @@ public class Environment {
 		put(new Atom("macro"), new BuiltinMacro());
 		put(new Atom("eval"), new BuiltinEval());
 		put(new Atom("let"), new BuiltinLet());
-		try {
-			put(new Atom("list"), this.eval(Parser.parse("(lambda l l)")));
-		} catch (LLException e) {
-			e.printStackTrace();
-		}
 		put(Cons.nil, Cons.nil);
 		put(Atom.t, Atom.t);
 		put(Atom.f, Atom.f);
